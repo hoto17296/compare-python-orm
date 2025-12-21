@@ -1,0 +1,23 @@
+services:
+  workspace:
+    build: .
+    command: sleep infinity
+    environment:
+      DB_HOSTNAME: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: deadbeef
+    volumes:
+      - ..:/workspace:cached
+      - cache:/root/.cache:cached
+    working_dir: /workspace
+
+  postgres:
+    image: postgres:18
+    volumes:
+      - postgres:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: deadbeef
+
+volumes:
+  cache:
+  postgres:

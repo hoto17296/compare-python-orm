@@ -1,0 +1,35 @@
+{
+  "name": "Compare Python ORM",
+  "dockerComposeFile": ["compose.yml"],
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "uv sync",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "cweijan.vscode-database-client2",
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.formatOnSaveMode": "file",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+          },
+          "editor.tabSize": 4
+        },
+        "python.languageServer": "Pylance",
+        "python.analysis.typeCheckingMode": "basic",
+        "notebook.formatOnSave.enabled": true,
+        "notebook.codeActionsOnSave": {
+          "notebook.source.organizeImports.ruff": "explicit"
+        },
+        "remote.autoForwardPorts": false
+      }
+    }
+  }
+}
