@@ -53,7 +53,7 @@ class UserMeta(TypedDict):
 # ------------------------------------------------------------
 # Models
 # ------------------------------------------------------------
-class User(Base, TimestampMixin):
+class UserTable(Base, TimestampMixin):
     __tablename__ = "users"
 
     name: Mapped[str] = mapped_column(
@@ -69,20 +69,20 @@ class User(Base, TimestampMixin):
         server_default="{}",
     )
 
-    articles: Mapped[list[Article]] = relationship(
+    articles: Mapped[list[ArticleTable]] = relationship(
         back_populates="author",
         cascade="all, delete-orphan",
         passive_deletes=True,
     )
 
-    comments: Mapped[list[Comment]] = relationship(
+    comments: Mapped[list[CommentTable]] = relationship(
         back_populates="author",
         cascade="all, delete-orphan",
         passive_deletes=True,
     )
 
 
-class Article(Base, TimestampMixin):
+class ArticleTable(Base, TimestampMixin):
     __tablename__ = "articles"
 
     author_id: Mapped[uuid.UUID] = mapped_column(
@@ -108,18 +108,18 @@ class Article(Base, TimestampMixin):
     )
 
     # relationships
-    author: Mapped[User] = relationship(
+    author: Mapped[UserTable] = relationship(
         back_populates="articles",
     )
 
-    comments: Mapped[list[Comment]] = relationship(
+    comments: Mapped[list[CommentTable]] = relationship(
         back_populates="article",
         cascade="all, delete-orphan",
         passive_deletes=True,
     )
 
 
-class Comment(Base, TimestampMixin):
+class CommentTable(Base, TimestampMixin):
     __tablename__ = "comments"
 
     article_id: Mapped[uuid.UUID] = mapped_column(
@@ -142,10 +142,10 @@ class Comment(Base, TimestampMixin):
     )
 
     # relationships
-    article: Mapped[Article] = relationship(
+    article: Mapped[ArticleTable] = relationship(
         back_populates="comments",
     )
 
-    author: Mapped[User] = relationship(
+    author: Mapped[UserTable] = relationship(
         back_populates="comments",
     )
