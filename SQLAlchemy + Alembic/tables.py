@@ -8,9 +8,9 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 # ------------------------------------------------------------
-# Base
+# BaseTable
 # ------------------------------------------------------------
-class Base(DeclarativeBase):
+class BaseTable(DeclarativeBase):
     """Alembic が autogenerate で拾うための Base"""
 
     id: Mapped[uuid.UUID] = mapped_column(
@@ -51,9 +51,9 @@ class UserMeta(TypedDict):
 
 
 # ------------------------------------------------------------
-# Models
+# Tables
 # ------------------------------------------------------------
-class UserTable(Base, TimestampMixin):
+class UserTable(BaseTable, TimestampMixin):
     __tablename__ = "users"
 
     name: Mapped[str] = mapped_column(
@@ -82,7 +82,7 @@ class UserTable(Base, TimestampMixin):
     )
 
 
-class ArticleTable(Base, TimestampMixin):
+class ArticleTable(BaseTable, TimestampMixin):
     __tablename__ = "articles"
 
     author_id: Mapped[uuid.UUID] = mapped_column(
@@ -119,7 +119,7 @@ class ArticleTable(Base, TimestampMixin):
     )
 
 
-class CommentTable(Base, TimestampMixin):
+class CommentTable(BaseTable, TimestampMixin):
     __tablename__ = "comments"
 
     article_id: Mapped[uuid.UUID] = mapped_column(
