@@ -13,6 +13,8 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 class BaseTable(DeclarativeBase):
     """Alembic が autogenerate で拾うための Base"""
 
+    __pydantic_model__: str | None = None
+
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
@@ -55,6 +57,7 @@ class UserMeta(TypedDict):
 # ------------------------------------------------------------
 class UserTable(BaseTable, TimestampMixin):
     __tablename__ = "users"
+    __pydantic_model__ = "User"
 
     name: Mapped[str] = mapped_column(
         Text,
@@ -84,6 +87,7 @@ class UserTable(BaseTable, TimestampMixin):
 
 class ArticleTable(BaseTable, TimestampMixin):
     __tablename__ = "articles"
+    __pydantic_model__ = "Article"
 
     author_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
@@ -121,6 +125,7 @@ class ArticleTable(BaseTable, TimestampMixin):
 
 class CommentTable(BaseTable, TimestampMixin):
     __tablename__ = "comments"
+    __pydantic_model__ = "Comment"
 
     article_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
