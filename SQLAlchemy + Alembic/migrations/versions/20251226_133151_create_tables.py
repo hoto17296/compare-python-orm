@@ -1,8 +1,8 @@
 """Create tables
 
-Revision ID: 20251221_073152
+Revision ID: 20251226_133151
 Revises: 
-Create Date: 2025-12-21 07:31:52.800630
+Create Date: 2025-12-26 13:31:52.180573
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '20251221_073152'
+revision: str = '20251226_133151'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,12 +25,14 @@ def upgrade() -> None:
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('email', sa.Text(), nullable=False),
     sa.Column('name', sa.Text(), nullable=False),
+    sa.Column('password_hash', sa.Text(), nullable=False),
     sa.Column('meta', postgresql.JSONB(astext_type=sa.Text()), server_default='{}', nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_users_created_at'), 'users', ['created_at'], unique=False)
-    op.create_index(op.f('ix_users_name'), 'users', ['name'], unique=True)
+    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
     op.create_index(op.f('ix_users_updated_at'), 'users', ['updated_at'], unique=False)
     op.create_table('articles',
     sa.Column('id', sa.UUID(), nullable=False),
@@ -79,7 +81,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_articles_author_id'), table_name='articles')
     op.drop_table('articles')
     op.drop_index(op.f('ix_users_updated_at'), table_name='users')
-    op.drop_index(op.f('ix_users_name'), table_name='users')
+    op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_index(op.f('ix_users_created_at'), table_name='users')
     op.drop_table('users')
     # ### end Alembic commands ###

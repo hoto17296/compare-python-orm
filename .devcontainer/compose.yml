@@ -3,6 +3,7 @@ services:
     build: .
     command: sleep infinity
     environment:
+      HASH_SALT: deadbeef
       DATABASE_HOSTNAME: postgres
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: deadbeef

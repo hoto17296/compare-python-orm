@@ -59,11 +59,21 @@ class UserTable(BaseTable, TimestampMixin):
     __tablename__ = "users"
     __pydantic_model__ = "User"
 
-    name: Mapped[str] = mapped_column(
+    email: Mapped[str] = mapped_column(
         Text,
         nullable=False,
         unique=True,
         index=True,
+    )
+
+    name: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+
+    password_hash: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
     )
 
     meta: Mapped[UserMeta] = mapped_column(

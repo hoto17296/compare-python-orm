@@ -1,9 +1,20 @@
 import subprocess
+from hashlib import pbkdf2_hmac
+from os import environ
 from tempfile import NamedTemporaryFile
 from typing import Any, overload
 
 from sqlalchemy import inspect
 from sqlalchemy.orm import DeclarativeBase
+
+
+def hash(data: str) -> str:
+    return pbkdf2_hmac(
+        hash_name="sha256",
+        password=data.encode(),
+        salt=environ["HASH_SALT"].encode(),
+        iterations=1_000_000,
+    ).hex()
 
 
 def ruff_format(
